@@ -5,6 +5,19 @@ const config = require('./config.json');
 
 const connection = sqlDB.connect(config);
 
+// handle potential cors errors by providing headers.
+app.use((res,req,next)=>{
+    res.header('Access-Control-Allow-Origin', '*'); // maybe restrict access to my app later?
+    res.header('Access-Control-Allow-Headers', '*');
+    if (req.method === 'OPTIONS'){
+        // allowed http requests
+        res.header('Access-Control-Allow-Medthods', 'GET, POST, PUT, DELETE');
+        return res.status(200).json({});
+    }
+    next();
+});
+
+
 // ROUTES - respond to requests for a given url with... something.
 app.get("/", (req, res)=>{
     console.log("Getting root");
